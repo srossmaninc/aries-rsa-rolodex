@@ -114,8 +114,10 @@ def newFile():
 
 	while True:
 		# Getting new file's location
-		print("where to create new file (/file/path/)?")
-		file_location = input()
+		#print("where to create new file (/file/path/)?")
+		#file_location = input()
+		
+		file_location = "/Users/sethrossman/Downloads/"
 		while os.path.isdir(file_location) != True:
 			print("not a valid input")
 			print("where to create new file (/file/path/)?")
@@ -152,9 +154,11 @@ def newFile():
 		print("not a valid input")
 		print("how many bits would you like the p&q numbers to be?")
 		print("(recommended size is 1024)")
-		n = input()
-	p = number.getPrime(int(bit_length))
-	q = number.getPrime(int(bit_length))
+		n = int(input())
+	#p = number.getPrime(int(bit_length))
+	#q = number.getPrime(int(bit_length))
+	p = 61
+	q = 53
 
 	n = p * q # product of p * q // public key[1]
 	phi = (p - 1) * (q - 1) # phi(n)
@@ -199,15 +203,21 @@ def processFile(file_location):
 	public_key = public_key[1:len(public_key) - 2]
 	# ^^^ -2 because of /n newline
 	public_key = public_key.split(", ")
+
+	if (len(public_key) == 2):
+		if (public_key[0].isnumeric() and public_key[1].isnumeric()):
+			print("\033[1;34;10mKEYS CHECK OUT... \033[1;32;10mFILE FORMAT CORRECT")
+	else:
+		print("\033[1;31;10mFILE IN IMPROPER FORMAT\033[1;32;10m")
+		return "FAILED"
+		# DO SOMETHING HERE DO SOMETHING HERE
+
 	# NOTE WE WILL HAVE TO CHANGE THIS TO NOT CAUSE ERRORS
 	# WHEN FILE IS WRONG FORMAT
 	public_key_e = public_key[0]
 	public_key_n = public_key[1]
-
-	if (public_key_e.isnumeric() and public_key_n.isnumeric()):
-		print("\033[1;34;10mKEYS CHECK OUT... \033[1;32;10mFILE FORMAT CORRECT")
-		print("\033[1;32;10m%s\033[1;36;10m%s" % ("Encryption number: ", public_key_e))
-		print("\033[1;32;10m%s\033[1;33;10m%s" % ("Modulo number: ", public_key_n))
+	print("\033[1;32;10m%s\033[1;36;10m%s" % ("Encryption number: ", public_key_e))
+	print("\033[1;32;10m%s\033[1;33;10m%s" % ("Modulo number: ", public_key_n))
 
 	line = file.readline()
 	i = 0
@@ -330,10 +340,10 @@ def viewFile(file_location, n):
 def addToFile(file_location, public_key):
 	print("what to add to file?")
 	text_to_add = input()
-	print("\033[1;35;10mconfirm (y) '\033[1;33;10m%s\033[1;32;10m'\033[1;32;10m?" % text_to_add)
+	print("\033[1;35;10mconfirm (y) \033[1;32;10m'\033[1;33;10m%s\033[1;32;10m'\033[1;32;10m?" % text_to_add)
 	confirmation = input()
-	if (confirmation == "y") != True:
-		print("\033[1;35;10mconfirm (y) '\033[1;33;10m%s\033[1;32;10m'\033[1;32;10m?" % text_to_add)
+	while (confirmation == "y") != True:
+		print("\033[1;35;10mconfirm (y) \033[1;32;10m'\033[1;33;10m%s\033[1;32;10m'?" % text_to_add)
 		confirmation = input()
 	print("\033[1;32;10madded '\033[1;33;10m%s\033[1;32;10m' to '\033[1;33;10m%s\033[1;32;10m'" % (text_to_add, file_location))
 
@@ -361,18 +371,26 @@ def quitProgram():
 	sys.exit("exiting now...")
 
 def editFile():
-	print("file location (/file/path/file)?")
+	#print("file location (/file/path/file)?")
 	#file_location = input()
 	# ^^^ this line
 
 	# NOTE FOR DEBUGGING WE HAVE COMMENTED ABOVE STATEMENT
 	#file_location = "/Users/sethrossman/Downloads/pls-work-yaypls-work-yay"
-	file_location = "/Users/sethrossman/Downloads/rsa-encrypted-secure-file"
+
+	print("enter filename >> ", end="")
+	filename = input()
+	file_location = "/Users/sethrossman/Downloads/" + filename
 
 	if (os.path.isfile(file_location) != True):
 		print("FILE NOT FOUND")
 
 	public_key = processFile(file_location)
+
+	if (public_key == "FAILED"):
+		print("file was not in the correct format\n"
+			"\033[1;31;10mbacking out to menu now...\033[1;32;10m", end="")
+		return
 
 	while True:
 		print("choose operation to make on the file...")
@@ -419,7 +437,9 @@ def main():
 		if choice == "":
 			print("no choice selected... please try again")
 		else:
-			print("\033[1;32;10m'%s' selected" % (options[int(choice) - 1]))
+			# HEREEEE
+			if choice.isnumeric() == True:
+				print("\033[1;32;10m'%s' selected" % (options[int(choice) - 1]))
 		if choice == "1":
 			#print("DEBUG >> %s SELECTED" % (options[0]))
 
@@ -432,7 +452,7 @@ def main():
 			#print("DEBUG >> %s SELECTED" % (options[1]))
 
 			# GO TO SUBMENU (2) FUNCTION
-			print("\033[1;32;10m") # newline
+			print("\033[1;32;10m", end="") # color change
 			editFile()
 			print() # newline
 
