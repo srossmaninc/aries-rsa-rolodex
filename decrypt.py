@@ -1,5 +1,6 @@
-# Decrypt program
-# This program takes will create a file
+# aries program
+# made by @srando
+# version 1
 
 from math import gcd
 from Crypto.Util import number
@@ -9,6 +10,14 @@ import fileinput
 import os.path
 import time
 import sys
+
+# TO DO:
+# 1.) Fix file location input
+# 2.) Upload to github
+# 3.) Implement prime number thing
+# 4.) create master file of file locations and implement
+# 5.) Test and publish to github
+# 6.) Create writeup?
 
 # ENCRYPTION
 
@@ -93,15 +102,30 @@ options = [">1 create new file", ">2 view/add/subtract from file [password neede
 # Query with input everytime
 #file_locaton = "C:/blah blah"
 
+def findPrime(n):
+	print("I should be finished!")
+	return 5 # fix
+
 def begin():
-	intro_blurb = ("\033[1;32;10m Welcome to \033[1;34;10m%s\033[1;32;10m...\n"
+	aries = ("\n   _____ __________.______________ _________\n"
+			"  /  _  \\\\______   \\   \\_   _____//   _____/\n"
+			" /  /_\\  \\|       _/   ||    __)_ \\_____  \\ \n"
+			"/    |    \\    |   \\   ||        \\/        \\\n"
+			"\\____|__  /____|_  /___/_______  /_______  /\n"
+			"        \\/       \\/            \\/        \\/")
+
+	intro_blurb = ("\033[1;32;10m Welcome to \033[1;34;10m%s\033[1;32;10m\n"
 		"This tool uses the RSA encryption scheme to encrypt\n"
 		"  small messages such as numbers, notes, passwords, and links\n"
 		"All encrypted data is saved into a physical file in the event\n"
 		"  the program crashes or if the data is needed on a separate device\n"
 		"\033[1;34;10mmade by @srando \033[1;36;10m(✿◠‿◠)\n"
-		"\033[1;35;10mloading menu now...\n" % ("aries"))
+		"\033[1;35;10mloading menu now...\n" % (aries)) # "aries"
 	print(intro_blurb)
+
+def readMasterFile(file_location):
+	print("this should be fixed!")
+	return False # fix
 
 # THIS function sets up a new file (using format found in program notes)
 def newFile():
@@ -116,7 +140,7 @@ def newFile():
 		# Getting new file's location
 		#print("where to create new file (/file/path/)?")
 		#file_location = input()
-		
+
 		file_location = "/Users/sethrossman/Downloads/"
 		while os.path.isdir(file_location) != True:
 			print("not a valid input")
@@ -157,8 +181,10 @@ def newFile():
 		n = int(input())
 	#p = number.getPrime(int(bit_length))
 	#q = number.getPrime(int(bit_length))
-	p = 61
-	q = 53
+	#p = 61
+	#q = 53
+	p = findPrime(n) # finish function
+	w = findPrime(n) # finish function
 
 	n = p * q # product of p * q // public key[1]
 	phi = (p - 1) * (q - 1) # phi(n)
